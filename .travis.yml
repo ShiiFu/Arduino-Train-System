@@ -9,7 +9,8 @@ cache:
         - "~/.platformio"
 
 env:
-    - PLATFORMIO_CI_SRC=./RailroadCrossing.ino
+    - PLATFORMIO_CI_SRC=./RailroadCrossing/RailroadCrossing.ino
+    - PLATFORMIO_CI_SRC=./TownshipManagement/TownshipManagement.ino
 
 install:
     - pip install -U platformio
