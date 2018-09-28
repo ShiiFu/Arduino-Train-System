@@ -1,6 +1,6 @@
 // Fichier de programmation en C de la carte Arduino gérant automatiquement le réseau N
 // Par LEROY Damien	(damien7leroy@gmail.com)
-// 26/01/2015 
+// 26/01/2015
 
 
 #define NBCANTON 11 // Nombre de canton
@@ -19,6 +19,7 @@ typedef struct
 void initialise (Canton *cantonTab);
 
 // Définition des 11 cantons avec leurs entrées (ILS) et sorties (Relais)
+// {ILS, relais lent, relais rapide}
 Canton cantonTab[NBCANTON] = {{2, 24, 42},
 						{3, 25, 43},
 						{4, 26, 44},
@@ -30,12 +31,6 @@ Canton cantonTab[NBCANTON] = {{2, 24, 42},
 						{10, 32, 50},
 						{11, 33, 51},
 						{12, 34, 52}};
-
-/*Canton cantonTab[NBCANTON] = {{2, 24, 42},
-						{3, 25, 43},
-						{4, 26, 44},
-						{5, 27, 45},
-						{6, 28, 46}};*/
 
 
 // Fonction setup lancé une fois au démarrage de la carte et lors de son reset
@@ -56,7 +51,7 @@ void loop()
 		{
 			digitalWrite(cantonTab[i].relaisLent, LOW);
 			digitalWrite(cantonTab[i].relaisRapide, HIGH);
-		}	
+		}
 	}
 	else
 	{
@@ -70,36 +65,34 @@ void loop()
 				String message = "ILS ";
 				i++;
 				//message = message + i;
-        Serial.println(i);
+				Serial.println(i);
 				i--;
-				/*if (i == 8 || i == 9)
-					Serial.print("rien");
-				else*/
-				//Serial.println(message + " detecte");
 				j = i;
+
 				// un canton avant on arrête
 				j--;
 				if (j == -1)
 					j = NBCANTON-1;
-				/*digitalWrite(cantonTab[j].relaisRapide, LOW);
-				digitalWrite(cantonTab[j].relaisLent, LOW);*/
+				digitalWrite(cantonTab[j].relaisRapide, LOW);
+				digitalWrite(cantonTab[j].relaisLent, LOW);
+
 				// deux cantons avant on ralenti
 				j--;
 				if (j == -1)
 					j = NBCANTON-1;
-				/*digitalWrite(cantonTab[j].relaisRapide, LOW);
-				digitalWrite(cantonTab[j].relaisLent, HIGH);*/
-				// trois cantons avant on met à fond
+				digitalWrite(cantonTab[j].relaisRapide, LOW);
+				digitalWrite(cantonTab[j].relaisLent, HIGH);
+
+				// trois cantons avant on met à allure rapide
 				j--;
 				if (j == -1)
 					j = NBCANTON-1;
-				/*digitalWrite(cantonTab[j].relaisLent, LOW);
-				digitalWrite(cantonTab[j].relaisRapide, HIGH);*/
-				//delay(500);
+				digitalWrite(cantonTab[j].relaisLent, LOW);
+				digitalWrite(cantonTab[j].relaisRapide, HIGH);
 			}
 		}
 	}
- 
+
 }
 
 void initialise (Canton *cantonTab)
@@ -109,11 +102,11 @@ void initialise (Canton *cantonTab)
 	{
 		// Définition de l'ILS en tant qu'entrée
 		pinMode(cantonTab[i].ils, INPUT_PULLUP);
-	
+
 		// Définition du relais lent en tant que sortie
 		pinMode(cantonTab[i].relaisLent, OUTPUT);
 		digitalWrite(cantonTab[i].relaisLent, HIGH);
-	
+
 		// Définition du relais rapide en tant que sortie
 		pinMode(cantonTab[i].relaisRapide, OUTPUT);
 		digitalWrite(cantonTab[i].relaisRapide, LOW);
